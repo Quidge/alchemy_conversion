@@ -11,6 +11,8 @@ from helpers import *
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
 
 # Ensure responses aren't cached
 @app.after_request
@@ -28,3 +30,44 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+
+@app.route("/register", methods=["GET, POST"])
+def register():
+	"""Register user"""
+
+	session.clear()
+
+	error = None
+
+	if request.method == "POST":
+
+        if not request.form.get("username") or not request.form.get("password") or not request.form.get("confirmation"):
+            error = "Missing fields"
+            flash(error)
+            return render_template("register.html", error=error)
+        elif request.form.get("password") != request.form.get("confirmation"):
+            error = "Passwords do not match"
+            flash(error)
+            return render_template("register.html", error=error)
+
+        # if this logic passes, all fields must be filled in and
+        # password matches confirmation
+
+        # for brevity
+        username = request.form.get("username")
+        ptpass = request.form.get("password")
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
